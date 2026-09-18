@@ -7,7 +7,13 @@ import Job from "@/models/job";
 import Profile from "@/models/profile";
 import { revalidatePath } from "next/cache";
 
-const stripe = require("stripe")(process.env.STRIPE_API_KEY);
+let stripe;
+function getStripe() {
+  if (!stripe) {
+    stripe = require("stripe")(process.env.STRIPE_API_KEY);
+  }
+  return stripe;
+}
 
 //create profile action
 export async function createProfileAction(formData, pathToRevalidate) {
@@ -165,7 +171,7 @@ export async function updateProfileAction(data, pathToRevalidate) {
 
 //create stripe price id based on tier selection
 export async function createPriceIdAction(data) {
-  const session = await stripe.prices.create({
+  const session = await getStripe().prices.create({
     currency: "inr",
     unit_amount: data?.amount * 100,
     recurring: {
@@ -184,7 +190,7 @@ export async function createPriceIdAction(data) {
 
 //create payment logic
 export async function createStripePaymentAction(data) {
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: data?.lineItems,
     mode: "subscription",

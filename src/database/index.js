@@ -1,12 +1,28 @@
-const { default: mongoose } = require("mongoose");
+import mongoose from "mongoose";
+
+let cached = global._mongooseConnection;
+if (!cached) {
+  cached = global._mongooseConnection = { conn: null, promise: null };
+}
 
 const connectToDB = async () => {
-  const connectionURL = process.env.MONGODB;
+  if (cached.conn) return cached.conn;
 
-  mongoose
-    .connect(connectionURL)
-    .then(() => console.log("job board database connection is successfull"))
-    .catch((error) => console.log(error));
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGODB).then((mongoose) => {
+      console.log("job board database connection is successfull");
+      return mongoose;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    cached.promise = null;
+    throw error;
+  }
+
+  return cached.conn;
 };
 
 export default connectToDB;

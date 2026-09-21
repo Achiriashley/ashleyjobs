@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import connectToDB from "@/database";
 import Application from "@/models/application";
 import Feed from "@/models/feed";
@@ -22,11 +23,15 @@ export async function createProfileAction(formData, pathToRevalidate) {
   revalidatePath(pathToRevalidate);
 }
 
-export async function fetchProfileAction(id) {
+const fetchProfileByUserId = cache(async (id) => {
   await connectToDB();
   const result = await Profile.findOne({ userId: id });
 
   return JSON.parse(JSON.stringify(result));
+});
+
+export async function fetchProfileAction(id) {
+  return fetchProfileByUserId(id);
 }
 
 //create job action

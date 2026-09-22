@@ -182,6 +182,7 @@ function OnBoard() {
       });
 
     if (error) {
+      console.error("Supabase resume upload error:", error);
       notifier.error("Failed to upload resume. Please try again.");
     } else if (data) {
       notifier.success("Resume uploaded successfully!");

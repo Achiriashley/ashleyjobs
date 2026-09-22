@@ -64,7 +64,7 @@ import { fetchProfileAction } from "@/actions";
 export default function OnBoardPage() {
   const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  const [profileInfo, setProfileInfo] = useState(null);
+  const [profileInfo, setProfileInfo] = useState(undefined);
 
   // ✅ Redirect if not logged in
   useEffect(() => {
@@ -95,7 +95,7 @@ export default function OnBoardPage() {
   }, [profileInfo, router]);
 
   // 🌀 Show loader while redirecting or loading user state
-  if (!isLoaded || !isSignedIn || (isSignedIn && profileInfo === null)) {
+  if (!isLoaded || !isSignedIn || (isSignedIn && profileInfo === undefined)) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-white text-blue-800">
         <button

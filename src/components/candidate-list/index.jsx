@@ -7,11 +7,7 @@ import {
   getCandidateDetailsByIDAction,
   updateJobApplicationAction,
 } from "@/actions";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseClient = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+import { getSupabaseClient } from "@/utils/supabaseClient";
 
 function CandidateList({
   jobApplications,
@@ -32,7 +28,7 @@ function CandidateList({
   console.log(currentCandidateDetails);
 
   function handlePreviewResume() {
-    const { data } = supabaseClient.storage
+    const { data } = getSupabaseClient().storage
       .from("job-board-public")
       .getPublicUrl(currentCandidateDetails?.candidateInfo?.resume);
 

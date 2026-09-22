@@ -7,12 +7,8 @@ import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { CirclePlus, Heart } from "lucide-react";
 import { Input } from "../ui/input";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseClient } from "@/utils/supabaseClient";
 import { createFeedPostAction, updateFeedPostAction } from "@/actions";
-
-const supabaseClient = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 function Feed({ user, profileInfo, allFeedPosts }) {
   const [showPostDialog, setShowPostDialog] = useState(false);
@@ -28,7 +24,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
   }
 
   function handleFetchImagePublicUrl(getData) {
-    const { data } = supabaseClient.storage
+    const { data } = getSupabaseClient().storage
       .from("job-board-public")
       .getPublicUrl(getData.path);
 
@@ -42,7 +38,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
   }
 
   async function handleUploadImageToSupabase() {
-    const { data, error } = await supabaseClient.storage
+    const { data, error } = await getSupabaseClient().storage
       .from("job-board-public")
       .upload(`/public/${imageData?.name}`, imageData, {
         cacheControl: "3600",

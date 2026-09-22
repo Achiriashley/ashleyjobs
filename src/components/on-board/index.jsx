@@ -31,7 +31,7 @@
 //   }
  
 //   const handleUploadPdfToSupabase = useCallback(async () => {
-//     const { data, error } = await supabaseClient.storage
+//     const { data, error } = await getSupabaseClient().storage
 //       .from("job-board-public")
 //       .upload(`/public/${file.name}`, file, {
 //         cacheControl: "3600",
@@ -150,14 +150,10 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { createProfileAction } from "@/actions";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseClient } from "@/utils/supabaseClient";
 import CommonForm from "../common-form";
 import "notyf/notyf.min.css";
 import { notifier } from "@/utils/notifier";
-
-
-const supabaseClient = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
 
 function OnBoard() {
   const [currentTab, setCurrentTab] = useState("candidate");
@@ -174,7 +170,7 @@ function OnBoard() {
   }
 
   const handleUploadPdfToSupabase = useCallback(async () => {
-    const { data, error } = await supabaseClient.storage
+    const { data, error } = await getSupabaseClient().storage
       .from("job-board-public")
       .upload(`/public/${file.name}`, file, {
         cacheControl: "3600",

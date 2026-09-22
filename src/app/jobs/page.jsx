@@ -8,11 +8,12 @@ import {
 } from "@/actions";
 import JobListing from "@/components/job-listing";
 import { currentUser } from '@clerk/nextjs/server';
+import { redirect } from "next/navigation";
 
 async function JobsPage({ searchParams }) {
-  console.log(searchParams, "searchParams");
   const user = await currentUser();
   const profileInfo = await fetchProfileAction(user?.id);
+  if (!profileInfo) redirect("/onboard");
 
   const jobList =
     profileInfo?.role === "candidate"

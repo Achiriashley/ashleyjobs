@@ -15,15 +15,9 @@ function Header({ user, profileInfo }) {
     { label: "Feed", path: "/feed", show: !!profileInfo },
     { label: "Login", path: "/sign-in", show: !user},
     { label: "Register", path: "/sign-up", show: !user},
-    // { label: "Activity", path: "/activity", show: user },
-    // { label: "Companies", path: "/companies", show: user },
-    // { label: "Jobs", path: "/jobs", show: user },
-    // { label: "Membership", path: "/membership", show: user }, 
-    // { label: "Account", path: "/account", show: user },
     { label: "Activity", path: "/activity", show: profileInfo?.role === "candidate" },
     { label: "Companies", path: "/companies", show: profileInfo?.role === "candidate" },
-    { label: "Jobs", path: "/jobs", show: !!profileInfo?.role=== "recruiter "},
-    // { label: "Membership", path: "/membership", show: !!profileInfo },
+    { label: "Jobs", path: "/jobs", show: !!profileInfo },
     { label: "Account", path: "/account", show: !!profileInfo },
   ];
 

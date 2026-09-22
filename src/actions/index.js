@@ -31,6 +31,7 @@ const fetchProfileByUserId = cache(async (id) => {
 });
 
 export async function fetchProfileAction(id) {
+  if (!id) return null;
   return fetchProfileByUserId(id);
 }
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { createProfileAction } from "@/actions";
 import CommonForm from "@/components/common-form";
 import {
@@ -12,6 +13,7 @@ import { notifier } from "@/utils/notifier";
 
 export default function RecruiterOnboard() {
   const { user } = useUser();
+  const router = useRouter();
   const [recruiterFormData, setRecruiterFormData] = useState(initialRecruiterFormData);
 
   function handleRecuiterFormValid() {
@@ -33,6 +35,7 @@ export default function RecruiterOnboard() {
       }, "/onboard/recruiter");
 
       notifier.success("You have been successfully onboarded as a recruiter!");
+      router.push("/jobs");
     } catch {
       notifier.error("Failed to onboard. Please try again.");
     }

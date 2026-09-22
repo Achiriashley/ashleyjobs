@@ -148,10 +148,11 @@ import {
   recruiterOnboardFormControls,
 } from "@/utils";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { createProfileAction } from "@/actions";
 import { createClient } from "@supabase/supabase-js";
 import CommonForm from "../common-form";
-import "notyf/notyf.min.css"; 
+import "notyf/notyf.min.css";
 import { notifier } from "@/utils/notifier";
 
 
@@ -165,6 +166,7 @@ function OnBoard() {
   const [file, setFile] = useState(null);
 
   const { user } = useUser();
+  const router = useRouter();
 
   async function handleFileChange(event) {
     event.preventDefault();
@@ -234,8 +236,9 @@ function OnBoard() {
 
     try {
       await createProfileAction(data, "/onboard");
-      
+
       notifier.success("You have been successfully onboarded!");
+      router.push("/jobs");
     } catch (error) {
       notifier.error("Failed to onboard. Please try again.");
     }

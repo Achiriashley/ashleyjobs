@@ -26,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className="">
         {/* <body className={Inter.className}> */}
         {/* <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}> */}
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
           <CommonLayout  attribute="class"
             defaultTheme="system"/>
       {children}
-    
+
 
           </Suspense>
         </body>

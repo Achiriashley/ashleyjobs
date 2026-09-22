@@ -3,6 +3,7 @@
 import { fetchProfileAction } from "@/actions";
 import { AnimatedTestimonialsDemo } from "@/components/AnimatedTestimonialsDemo";
 import HomepageButtonControls from "@/components/homepage-button-controls";
+import DashboardCard from "@/components/dashboard-card";
 import SmoothScrollLinks from "@/components/smoothScrollLinks";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
@@ -16,12 +17,106 @@ async function Home() {
 
   if (user && !profileInfo?._id) redirect("/onboard");
 
+  if (profileInfo?._id) {
+    const displayName =
+      profileInfo?.role === "candidate"
+        ? profileInfo?.candidateInfo?.name
+        : profileInfo?.recruiterInfo?.name;
+
+    return (
+      <div className="min-h-screen bg-white">
+        <section className="bg-gradient-to-br from-blue-500 to-purple-600 text-white py-16">
+          <div className="container mx-auto px-6">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Welcome back{displayName ? `, ${displayName}` : ""}
+            </h1>
+            <p className="mt-2 text-lg opacity-90">
+              {profileInfo?.role === "candidate"
+                ? "Ready to find your next opportunity?"
+                : "Ready to find your next great hire?"}
+            </p>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {profileInfo?.role === "candidate" ? (
+                <>
+                  <DashboardCard
+                    title="Browse Jobs"
+                    description="Explore open roles that match your skills and apply in one click."
+                    href="/jobs"
+                    cta="Browse Jobs"
+                  />
+                  <DashboardCard
+                    title="Your Activity"
+                    description="Track the status of jobs you've applied to."
+                    href="/activity"
+                    cta="View Activity"
+                  />
+                </>
+              ) : (
+                <>
+                  <DashboardCard
+                    title="Post a New Job"
+                    description="Create a new listing and start receiving applications."
+                    href="/jobs"
+                    cta="Post a Job"
+                  />
+                  <DashboardCard
+                    title="Your Job Postings"
+                    description="Review your posted jobs and see who has applied."
+                    href="/jobs"
+                    cta="View Applicants"
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <footer className="bg-gray-900 text-gray-300 py-12">
+          <div className="max-w-6xl mx-auto px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+              <div className="text-3xl font-extrabold">
+                <span className="text-orange-400">ASH</span>JOBS
+              </div>
+              <nav>
+                <ul className="flex flex-wrap gap-6 text-sm">
+                  <li>
+                    <a href="/about" className="hover:text-orange-300 transition-colors">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/contact" className="hover:text-orange-300 transition-colors">
+                      Contact
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/privacy" className="hover:text-orange-300 transition-colors">
+                      Privacy
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div className="mt-8 text-center text-sm">
+              © {new Date().getFullYear()} ASHJOBS. All rights reserved.
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <>
     <SmoothScrollLinks />
     <div className="flex flex-col min-h-screen bg-white  text-black
     ">
-    
+
   
           <section className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
         <div className="container mx-auto px-6 py-20 md:py-32">

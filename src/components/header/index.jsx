@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { AlignJustify, Moon } from "lucide-react";
-import { UserButton } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 
 function Header({ user, profileInfo }) {
@@ -13,13 +13,30 @@ function Header({ user, profileInfo }) {
   const menuItems = [
     { label: "Home", path: "/", show: true },
     { label: "Feed", path: "/feed", show: !!profileInfo },
-    { label: "Login", path: "/sign-in", show: !user},
-    { label: "Register", path: "/sign-up", show: !user},
     { label: "Activity", path: "/activity", show: profileInfo?.role === "candidate" },
     { label: "Companies", path: "/companies", show: profileInfo?.role === "candidate" },
     { label: "Jobs", path: "/jobs", show: !!profileInfo },
     { label: "Account", path: "/account", show: !!profileInfo },
   ];
+
+  const authButtonClasses =
+    "group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium cursor-pointer";
+
+  const renderAuthButtons = () =>
+    !user && (
+      <>
+        <SignInButton mode="modal">
+          <button type="button" className={authButtonClasses}>
+            Login
+          </button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <button type="button" className={authButtonClasses}>
+            Register
+          </button>
+        </SignUpButton>
+      </>
+    );
 
   const renderMenuItems = () =>
     menuItems.map(
@@ -52,6 +69,7 @@ function Header({ user, profileInfo }) {
             </Link>
             <div className="grid gap-2 py-6">
               {renderMenuItems()}
+              {renderAuthButtons()}
               {/* <Moon
                 className="cursor-pointer mb-4"
                 fill={theme === "dark" ? "light" : "dark"}
@@ -72,6 +90,7 @@ function Header({ user, profileInfo }) {
         {/* Desktop Navigation */}
          <nav className="ml-auto hidden lg:flex gap-6 items-center   top-0 z-50">
           {renderMenuItems()}
+          {renderAuthButtons()}
           {/* <Moon
             className="cursor-pointer"
             fill={theme === "dark" ? "light" : "dark"}

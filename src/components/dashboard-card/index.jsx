@@ -1,18 +1,16 @@
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 function DashboardCard({ title, description, href, cta }) {
   return (
-    <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
+    <div className="bg-card text-card-foreground p-6 sm:p-8 rounded-xl shadow-sm border border-border flex flex-col justify-between gap-6 transition hover:shadow-md">
       <div>
         <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-600 mb-6">{description}</p>
+        <p className="text-muted-foreground">{description}</p>
       </div>
-      <Link
-        href={href}
-        className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-center hover:bg-blue-700 transition"
-      >
-        {cta}
-      </Link>
+      <Button asChild size="lg" className="w-full sm:w-auto">
+        <Link href={href}>{cta}</Link>
+      </Button>
     </div>
   );
 }

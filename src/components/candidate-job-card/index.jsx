@@ -61,7 +61,7 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
           footerContent={
             <Button
               onClick={() => setShowJobDetailsDrawer(true)}
-              className=" dark:bg-[#fffa27] flex h-11 items-center justify-center px-5"
+              className=" flex h-11 items-center justify-center px-5"
             >
               View Details
             </Button>

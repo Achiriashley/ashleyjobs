@@ -124,7 +124,7 @@
 //                   index < 2 ? null : (
 //                     <Button
 //                       onClick={() => handlePayment(plan)}
-//                       className="disabled:opacity-65 dark:bg-[#fffa27] flex h-11 items-center justify-center px-5"
+//                       className="disabled:opacity-65 flex h-11 items-center justify-center px-5"
 //                     >
 //                       {profileInfo?.memberShipType === "basic" ||
 //                       profileInfo?.memberShipType === "teams"
@@ -215,7 +215,7 @@ function Membership({ profileInfo }) {
                   profileInfo?.memberShipType === plan.type ? null : (
                     <Button
                       onClick={() => handleFreePlan(plan)}
-                      className="disabled:opacity-65 dark:bg-[#fffa27] flex h-11 items-center justify-center px-5"
+                      className="disabled:opacity-65 flex h-11 items-center justify-center px-5"
                     >
                       {profileInfo?.isPremiumUser ? "Update Plan" : "Get Premium"}
                     </Button>

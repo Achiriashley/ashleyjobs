@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { AlignJustify, Moon } from "lucide-react";
+import { AlignJustify } from "lucide-react";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 function Header({ user, profileInfo }) {
-  const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
 
   const menuItems = [
     { label: "Home", path: "/", show: true },
@@ -19,21 +20,22 @@ function Header({ user, profileInfo }) {
     { label: "Account", path: "/account", show: !!profileInfo },
   ];
 
-  const authButtonClasses =
-    "group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium cursor-pointer";
+  const navLinkClasses = (isActive) =>
+    cn(
+      "inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+      isActive && "bg-accent text-accent-foreground"
+    );
 
   const renderAuthButtons = () =>
     !user && (
       <>
         <SignInButton mode="modal">
-          <button type="button" className={authButtonClasses}>
+          <button type="button" className={navLinkClasses(false)}>
             Login
           </button>
         </SignInButton>
         <SignUpButton mode="modal">
-          <button type="button" className={authButtonClasses}>
-            Register
-          </button>
+          <Button size="sm">Register</Button>
         </SignUpButton>
       </>
     );
@@ -45,7 +47,7 @@ function Header({ user, profileInfo }) {
           <Link
             key={index}
             href={menuItem.path}
-            className="group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium"
+            className={navLinkClasses(pathname === menuItem.path)}
           >
             {menuItem.label}
           </Link>
@@ -53,53 +55,41 @@ function Header({ user, profileInfo }) {
     );
 
   return (
-    <div >
-      <header className="flex h-6 w-full shrink-0 items-center p-4  top-0 z-50">
-      {/* Mobile Sidebar Menu */}
-       <Sheet>
+    <header className="sticky top-0 z-50 flex w-full items-center justify-between gap-4 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 py-3 sm:px-6">
+      <div className="flex items-center gap-3">
+        {/* Mobile Sidebar Menu */}
+        <Sheet>
           <SheetTrigger asChild>
-            <Button className="lg:hidden">
-              <AlignJustify className="h-6 w-6" />
+            <Button variant="outline" size="icon" className="lg:hidden">
+              <AlignJustify className="h-5 w-5" />
               <span className="sr-only">Toggle Navigation Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left">
-            <Link href="/" className="mr-6 text-2xl items-start font-bold">
+          <SheetContent side="left" className="flex flex-col gap-6 p-6">
+            <Link href="/" className="text-2xl font-bold">
               ASHJOBS
             </Link>
-            <div className="grid gap-2 py-6">
+            <div className="flex flex-col gap-1">
               {renderMenuItems()}
               {renderAuthButtons()}
-              {/* <Moon
-                className="cursor-pointer mb-4"
-                fill={theme === "dark" ? "light" : "dark"}
-                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              /> */}
-              <UserButton afterSignOutUrl="/" />
             </div>
           </SheetContent>
-        </Sheet> 
+        </Sheet>
 
-        {/* Logo for Desktop */}
-        <Link href="/" className="hidden lg:flex font-bold text-3xl mr-6">
-          <h3>ASHJOBS</h3>
+        {/* Logo — visible at every screen size */}
+        <Link href="/" className="text-xl font-bold sm:text-2xl">
+          ASHJOBS
         </Link>
+      </div>
 
-        
+      {/* Desktop Navigation */}
+      <nav className="hidden items-center gap-1 lg:flex">
+        {renderMenuItems()}
+        {renderAuthButtons()}
+      </nav>
 
-        {/* Desktop Navigation */}
-         <nav className="ml-auto hidden lg:flex gap-6 items-center   top-0 z-50">
-          {renderMenuItems()}
-          {renderAuthButtons()}
-          {/* <Moon
-            className="cursor-pointer"
-            fill={theme === "dark" ? "light" : "dark"}
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          /> */}
-          <UserButton afterSignOutUrl="/" />
-        </nav>  
-      </header>
-    </div>
+      {user && <UserButton afterSignOutUrl="/" />}
+    </header>
   );
 }
 

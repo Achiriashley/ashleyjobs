@@ -56,7 +56,7 @@ function Companies({ jobsList }) {
                           onClick={() =>
                             handleFilterJobsByCompanyName(companyName)
                           }
-                          className="dark:bg-[#fffa27] h-11 flex items-center justify-center px-5"
+                          className="h-11 flex items-center justify-center px-5"
                         >
                           See Jobs
                         </Button>

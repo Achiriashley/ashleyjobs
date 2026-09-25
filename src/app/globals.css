@@ -155,7 +155,7 @@ body::-webkit-scrollbar-thumb {
   transform: translateX(-50%);
   width: 2px;
   height: 100%;
-  background: #e5e7eb; /* Tailwind gray-300 */
+  background: var(--border);
   z-index: 0;
 }
 
@@ -179,8 +179,8 @@ body::-webkit-scrollbar-thumb {
   width: 16px;
   height: 16px;
   border-radius: 9999px;
-  background-color: #3b82f6; /* Tailwind blue-500 */
-  border: 3px solid white;
+  background-color: var(--primary);
+  border: 3px solid var(--background);
   z-index: 20;
 }
 

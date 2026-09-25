@@ -2,6 +2,7 @@
 
 import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
+import PageHeader from "../page-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 function CandidateActivity({ jobList, jobApplicants }) {
@@ -16,23 +17,26 @@ function CandidateActivity({ jobList, jobApplicants }) {
   console.log(uniqueStatusArray);
 
   return (
-    <div className="mx-auto max-w-7xl">
-      <Tabs defaultValue="Applied" className="w-full">
-        <div className="flex items-baseline dark:border-white justify-between border-b pb-6 pt-24">
-          <h1 className="text-4xl font-bold dark:text-white tracking-tight text-gray-950">
-            Your Activity
-          </h1>
-          <TabsList>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      {uniqueStatusArray.length > 0 ? (
+        <Tabs defaultValue="Applied" className="w-full">
+          <PageHeader
+            title="Your Activity"
+            description="Track the status of jobs you've applied to."
+            action={
+              <TabsList>
+                {uniqueStatusArray.map((status) => (
+                  <TabsTrigger key={status} value={status}>
+                    {status}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            }
+          />
+          <div className="pb-24 pt-6">
             {uniqueStatusArray.map((status) => (
-              <TabsTrigger key={status} value={status}>
-                {status}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
-        <div className="pb-24 pt-6">
-              {uniqueStatusArray.map((status) => (
-                <TabsContent key={status} value={status}>
+              <TabsContent key={status} value={status}>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {jobList
                     .filter(
                       (jobItem) =>
@@ -54,15 +58,23 @@ function CandidateActivity({ jobList, jobApplicants }) {
                         description={finalFilteredItem?.companyName}
                       />
                     ))}
-                </TabsContent>
-              ))}
-                
-            </div>
-         
-        
-      </Tabs>
-       </div>
-    
+                </div>
+              </TabsContent>
+            ))}
+          </div>
+        </Tabs>
+      ) : (
+        <>
+          <PageHeader
+            title="Your Activity"
+            description="Track the status of jobs you've applied to."
+          />
+          <p className="py-16 text-center text-muted-foreground">
+            You haven't applied to any jobs yet.
+          </p>
+        </>
+      )}
+    </div>
   );
 }
 

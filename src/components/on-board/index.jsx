@@ -242,19 +242,18 @@ function OnBoard() {
   }
 
   return (
-    <div className="bg-white">
+    <div className="mx-auto max-w-3xl px-4 sm:px-6">
       <Tabs value={currentTab} onValueChange={handleTabChange}>
-        <div className="w-full">
-          <div className="flex items-baseline justify-between border-b pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              Welcome to onboarding
-            </h1>
-            <TabsList>
-              <TabsTrigger value="candidate">Candidate</TabsTrigger>
-              <TabsTrigger value="recruiter">Recruiter</TabsTrigger>
-            </TabsList>
-          </div>
+        <div className="flex flex-col gap-4 border-b border-border pb-6 pt-10 sm:flex-row sm:items-end sm:justify-between sm:pt-16">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Welcome to onboarding
+          </h1>
+          <TabsList>
+            <TabsTrigger value="candidate">Candidate</TabsTrigger>
+            <TabsTrigger value="recruiter">Recruiter</TabsTrigger>
+          </TabsList>
         </div>
+        <div className="py-8">
         <TabsContent value="candidate">
           <CommonForm
             action={createProfile}
@@ -276,6 +275,7 @@ function OnBoard() {
             action={createProfile}
           />
         </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

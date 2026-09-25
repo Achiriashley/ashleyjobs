@@ -62,20 +62,18 @@ function CandidateList({
 
   return (
     <Fragment>
-      <div className="grid grid-cols-1 gap-3 p-10 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 p-6 sm:p-10 md:grid-cols-2 lg:grid-cols-3">
         {jobApplications && jobApplications.length > 0
           ? jobApplications.map((jobApplicantItem) => (
-
-              <div 
+              <div
                 key={jobApplicantItem?.candidateUserID}
-              className="bg-white shadow-lg w-full max-w-sm rounded-lg overflow-hidden mx-auto mt-4">
-                <div className="px-4 my-6 flex justify-between items-center">
-                  <h3 className="text-lg font-bold dark:text-black">
+                className="w-full max-w-sm rounded-lg border border-border bg-card p-4 shadow-sm"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-lg font-bold text-foreground">
                     {jobApplicantItem?.name}
-
                   </h3>
                   <Button
-
                     onClick={() =>
                       handleFetchCandidateDetails(
                         jobApplicantItem?.candidateUserID
@@ -98,56 +96,54 @@ function CandidateList({
         }}
       >
         <DialogContent>
-          <div className="">
-            <h1 className="text-2xl font-bold dark:text-white text-black">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">
               {currentCandidateDetails?.candidateInfo?.name},{" "}
               {currentCandidateDetails?.email}
             </h1>
-            <p className="text-xl font-medium dark:text-white text-black">
+            <p className="text-xl font-medium text-foreground">
               {currentCandidateDetails?.candidateInfo?.currentCompany}
             </p>
-            <p className="text-sm font-normal dark:text-white text-black">
+            <p className="text-sm font-normal text-muted-foreground">
               {currentCandidateDetails?.candidateInfo?.currentJobLocation}
             </p>
-            <p className="dark:text-white">
-              Total Experience:
+            <p className="text-muted-foreground">
+              Total Experience:{" "}
               {currentCandidateDetails?.candidateInfo?.totalExperience} Years
             </p>
-            <p className="dark:text-white">
+            <p className="text-muted-foreground">
               Salary: {currentCandidateDetails?.candidateInfo?.currentSalary}{" "}
               LPA
             </p>
-            <p className="dark:text-white">
+            <p className="text-muted-foreground">
               Notice Period:{" "}
               {currentCandidateDetails?.candidateInfo?.noticePeriod} Days
             </p>
-            <div className="flex items-center gap-4 mt-6">
-              <h1 className="dark:text-white">Previous Companies</h1>
-              <div className="flex flex-wrap items-center gap-4 mt-6">
+            <div className="mt-6">
+              <h1 className="font-semibold text-foreground">Previous Companies</h1>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 {currentCandidateDetails?.candidateInfo?.previousCompanies
                   .split(",")
                   .map((skillItem) => (
-                    <div 
+                    <span
                       key={skillItem}
-                    className="w-[100px] dark:bg-white flex justify-center items-center h-[35px] bg-black rounded-[4px]">
-                      <h2 className="text-[13px]  dark:text-black font-medium text-white">
-                        {skillItem}
-                      </h2>
-                    </div>
+                      className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
+                    >
+                      {skillItem}
+                    </span>
                   ))}
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 mt-6">
+            <div className="mt-6 flex flex-wrap gap-2">
               {currentCandidateDetails?.candidateInfo?.skills
                 .split(",")
                 .map((skillItem) => (
-                  <div
+                  <span
                     key={skillItem}
-                   className="w-[100px] dark:bg-white flex justify-center items-center h-[35px] bg-black rounded-[4px]">
-                    <h2 className="text-[13px] dark:text-black font-medium text-white">
-                      {skillItem}
-                    </h2>
-                  </div>
+                    className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+                  >
+                    {skillItem}
+                  </span>
                 ))}
             </div>
           </div>

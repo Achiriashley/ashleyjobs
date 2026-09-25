@@ -69,11 +69,11 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
         />
         <DrawerContent className="p-6">
           <DrawerHeader className="px-0">
-            <div className="flex justify-between">
-              <DrawerTitle className="text-4xl dark:text-white font-extrabold text-gray-800">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <DrawerTitle className="text-3xl font-extrabold text-foreground sm:text-4xl">
                 {jobItem?.title}
               </DrawerTitle>
-              <div className="flex gap-3">
+              <div className="flex shrink-0 gap-3">
                 <Button
                   onClick={handlejobApply}
                   disabled={
@@ -92,7 +92,8 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
                     : "Apply"}
                 </Button>
                 <Button
-                  className=" flex h-11 items-center justify-center px-5"
+                  variant="outline"
+                  className="flex h-11 items-center justify-center px-5"
                   onClick={() => setShowJobDetailsDrawer(false)}
                 >
                   Cancel
@@ -100,30 +101,26 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
               </div>
             </div>
           </DrawerHeader>
-          <DrawerDescription className="text-2xl dark:text-white  font-medium text-gray-600">
+          <DrawerDescription className="text-xl font-medium text-muted-foreground">
             {jobItem?.description}
-            <span className="text-xl dark:text-white  ml-4 font-normal text-gray-500">
-              {jobItem?.location}
-            </span>
+            <span className="ml-4 text-base font-normal">{jobItem?.location}</span>
           </DrawerDescription>
-          <div className="w-[150px] mt-6 flex justify-center dark:bg-white  items-center h-[40px] bg-black rounded-[4px]">
-            <h2 className="text-xl font-bold dark:text-black  text-white">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="inline-flex h-9 items-center rounded-full bg-primary/10 px-4 text-sm font-semibold text-primary">
               {jobItem?.type} Time
-            </h2>
+            </span>
+            <span className="text-base font-medium text-muted-foreground">
+              Experience: {jobItem?.experience} year
+            </span>
           </div>
-          <h3 className="text-2xl font-medium text-black mt-3">
-            Experience: {jobItem?.experience}  year
-          </h3>
-          <div className="flex gap-4 mt-6">
+          <div className="mt-6 flex flex-wrap gap-2">
             {jobItem?.skills.split(",").map((skillItem, index) => (
-              <div
-                key={`skill-${index}`} // ✅ key added here
-                className="w-[100px] flex justify-center items-center h-[35px] dark:bg-white bg-black rounded-[4px]"
+              <span
+                key={`skill-${index}`}
+                className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
               >
-                <h2 className="text-[13px] font-medium text-white dark:text-black">
-                  {skillItem}
-                </h2>
-              </div>
+                {skillItem}
+              </span>
             ))}
           </div>
         </DrawerContent>

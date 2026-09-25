@@ -149,6 +149,7 @@
 import { membershipPlans } from "@/utils";
 import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
+import PageHeader from "../page-header";
 import { Button } from "../ui/button";
 import { updateProfileAction } from "@/actions";
 
@@ -176,15 +177,15 @@ function Membership({ profileInfo }) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl">
-      <div className="flex items-baseline dark:border-white justify-between border-b pb-6 pt-24">
-        <h1 className="text-4xl font-bold dark:text-white tracking-tight text-gray-950">
-          {profileInfo?.isPremiumUser
+    <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <PageHeader
+        title={
+          profileInfo?.isPremiumUser
             ? "You are a premium user"
-            : "Choose Your Best Plan"}
-        </h1>
-        <div>
-          {profileInfo?.isPremiumUser ? (
+            : "Choose Your Best Plan"
+        }
+        action={
+          profileInfo?.isPremiumUser ? (
             <Button className="flex h-11 items-center justify-center px-5">
               {
                 membershipPlans.find(
@@ -192,38 +193,34 @@ function Membership({ profileInfo }) {
                 )?.heading
               }
             </Button>
-          ) : null}
-        </div>
-      </div>
-      <div className="py-20 pb-24 pt-6">
-        <div className="container mx-auto p-0 space-y-8">
-          <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
-            {membershipPlans.map((plan, index) => (
-              <CommonCard
-                icon={
-                  <div className="flex justify-between">
-                    <div>
-                      <JobIcon />
-                    </div>
-                    <h1 className="font-bold text-2xl">{plan.heading}</h1>
-                  </div>
-                }
-                key={index}
-                title={`XAF ${plan.price} /yr`}
-                description={plan.type}
-                footerContent={
-                  profileInfo?.memberShipType === plan.type ? null : (
-                    <Button
-                      onClick={() => handleFreePlan(plan)}
-                      className="disabled:opacity-65 flex h-11 items-center justify-center px-5"
-                    >
-                      {profileInfo?.isPremiumUser ? "Update Plan" : "Get Premium"}
-                    </Button>
-                  )
-                }
-              />
-            ))}
-          </div>
+          ) : null
+        }
+      />
+      <div className="py-10 pb-24">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {membershipPlans.map((plan, index) => (
+            <CommonCard
+              icon={
+                <div className="flex items-center justify-between">
+                  <JobIcon />
+                  <h1 className="text-2xl font-bold">{plan.heading}</h1>
+                </div>
+              }
+              key={index}
+              title={`XAF ${plan.price} /yr`}
+              description={plan.type}
+              footerContent={
+                profileInfo?.memberShipType === plan.type ? null : (
+                  <Button
+                    onClick={() => handleFreePlan(plan)}
+                    className="disabled:opacity-65 flex h-11 items-center justify-center px-5"
+                  >
+                    {profileInfo?.isPremiumUser ? "Update Plan" : "Get Premium"}
+                  </Button>
+                )
+              }
+            />
+          ))}
         </div>
       </div>
     </div>

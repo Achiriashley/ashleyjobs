@@ -1,13 +1,11 @@
-import { Fragment } from "react";
-
 function JobIcon() {
   return (
-    <Fragment>
+    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
-        className="w-12 h-12 mb-4 text-foreground"
+        className="h-7 w-7 text-primary"
       >
         <path
           fillRule="evenodd"
@@ -16,7 +14,7 @@ function JobIcon() {
         ></path>
         <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z"></path>
       </svg>
-    </Fragment>
+    </div>
   );
 }
 

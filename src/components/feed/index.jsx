@@ -7,6 +7,7 @@ import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { CirclePlus, Heart } from "lucide-react";
 import { Input } from "../ui/input";
+import PageHeader from "../page-header";
 import { getSupabaseClient } from "@/utils/supabaseClient";
 import { createFeedPostAction, updateFeedPostAction } from "@/actions";
 
@@ -95,54 +96,51 @@ function Feed({ user, profileInfo, allFeedPosts }) {
 
   return (
     <Fragment>
-      <div className="mx-auto max-w-7xl">
-        <div className="flex items-baseline justify-between dark:border-white border-b pb-6 pt-24">
-          <h1 className="dark:text-white text-4xl font-bold tracking-tight text-gray-900">
-            Explore Feed
-          </h1>
-          <div className="flex items-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <PageHeader
+          title="Explore Feed"
+          action={
             <Button
               onClick={() => setShowPostDialog(true)}
               className="flex h-11 items-center justify-center px-5"
             >
               Add New Post
             </Button>
-          </div>
-        </div>
-        <div className="py-12">
-          <div className="container m-auto p-0 flex flex-col gap-5 text-gray-700">
+          }
+        />
+        <div className="py-10 pb-24">
+          <div className="flex flex-col gap-5">
             {allFeedPosts && allFeedPosts.length > 0 ? (
               allFeedPosts.map((feedPostItem) => (
                 <div
                   key={feedPostItem._id}
-                  className="group relative -mx-4 p-6 rounded-3xl bg-gray-100 hover:bg-white hover:shadow-2xl cursor-auto shadow-2xl shadow-transparent gap-8 flex"
+                  className="group flex flex-col gap-6 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:shadow-lg sm:flex-row"
                 >
-                  <div className="sm:w-2/6 rounded-3xl overflow-hidden transition-all duration-500 group-hover:rounded-xl">
+                  <div className="overflow-hidden rounded-2xl sm:w-2/6">
                     <img
                       src={feedPostItem?.image}
                       alt="Post"
-                      className="h-80 w-full object-cover object-top transition duration-500 group-hover:scale-105"
+                      className="h-60 w-full object-cover object-top transition duration-500 group-hover:scale-105 sm:h-80"
                     />
                   </div>
-                  <div className="sm:p-2 sm:pl-0 sm:w-4/6">
-                    <span className="mt-4 mb-2 inline-block font-medium text-gray-500 sm:mt-0">
+                  <div className="sm:w-4/6">
+                    <span className="mb-2 inline-block font-medium text-muted-foreground">
                       {feedPostItem?.userName}
                     </span>
-                    <h3 className="mb-6 text-4xl font-bold text-gray-900">
+                    <h3 className="mb-6 text-2xl font-bold text-foreground sm:text-4xl">
                       {feedPostItem?.message}
                     </h3>
-                    <div className="flex gap-5">
+                    <div className="flex items-center gap-2">
                       <Heart
-                        size={25}
-                        fill={
+                        size={22}
+                        className={
                           feedPostItem?.likes?.length > 0
-                            ? "#000000"
-                            : "#ffffff"
+                            ? "cursor-pointer fill-primary text-primary"
+                            : "cursor-pointer text-muted-foreground"
                         }
-                        className="cursor-pointer"
                         onClick={() => handleUpdateFeedPostLikes(feedPostItem)}
                       />
-                      <span className="font-semibold text-xl">
+                      <span className="text-xl font-semibold text-foreground">
                         {feedPostItem?.likes?.length}
                       </span>
                     </div>
@@ -150,7 +148,9 @@ function Feed({ user, profileInfo, allFeedPosts }) {
                 </div>
               ))
             ) : (
-              <h1>No posts found!</h1>
+              <p className="py-16 text-center text-muted-foreground">
+                No posts found yet.
+              </p>
             )}
           </div>
         </div>
@@ -180,7 +180,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
           />
 
           <div className="flex gap-5 items-center justify-between">
-            <Label for="imageURL">
+            <Label htmlFor="imageURL">
               <CirclePlus />
               <Input
                 onChange={handleFileOnChange}

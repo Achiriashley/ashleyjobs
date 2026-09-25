@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogFooter } from "../ui/dialog";
 import {
   getCandidateDetailsByIDAction,
@@ -24,8 +25,6 @@ function CandidateList({
       setShowCurrentCandidateDetailsModal(true);
     }
   }
-
-  console.log(currentCandidateDetails);
 
   function handlePreviewResume() {
     const { data } = getSupabaseClient().storage
@@ -54,11 +53,8 @@ function CandidateList({
         ),
     };
 
-    console.log(jobApplicantsToUpdate, "jobApplicantsToUpdate");
     await updateJobApplicationAction(jobApplicantsToUpdate, "/jobs");
   }
-
-  console.log(jobApplications);
 
   return (
     <Fragment>
@@ -125,12 +121,7 @@ function CandidateList({
                 {currentCandidateDetails?.candidateInfo?.previousCompanies
                   .split(",")
                   .map((skillItem) => (
-                    <span
-                      key={skillItem}
-                      className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
-                    >
-                      {skillItem}
-                    </span>
+                    <Badge key={skillItem}>{skillItem}</Badge>
                   ))}
               </div>
             </div>
@@ -138,12 +129,9 @@ function CandidateList({
               {currentCandidateDetails?.candidateInfo?.skills
                 .split(",")
                 .map((skillItem) => (
-                  <span
-                    key={skillItem}
-                    className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
-                  >
+                  <Badge key={skillItem} variant="primary">
                     {skillItem}
-                  </span>
+                  </Badge>
                 ))}
             </div>
           </div>

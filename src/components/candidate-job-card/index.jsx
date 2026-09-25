@@ -15,8 +15,10 @@ import {
 import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import { createJobApplicationAction } from "@/actions";
 import { notifier } from "@/utils/notifier";
+import { formatRelativeDate } from "@/utils";
 
 function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
   const [showJobDetailsDrawer, setShowJobDetailsDrawer] = useState(false);
@@ -58,6 +60,13 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
           icon={<JobIcon />}
           title={jobItem?.title}
           description={jobItem?.companyName}
+          badges={[
+            jobItem?.location ? { label: jobItem.location } : null,
+            jobItem?.type ? { label: `${jobItem.type} Time`, variant: "primary" } : null,
+            formatRelativeDate(jobItem?.createdAt)
+              ? { label: formatRelativeDate(jobItem.createdAt), variant: "outline" }
+              : null,
+          ].filter(Boolean)}
           footerContent={
             <Button
               onClick={() => setShowJobDetailsDrawer(true)}
@@ -106,21 +115,21 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
             <span className="ml-4 text-base font-normal">{jobItem?.location}</span>
           </DrawerDescription>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="inline-flex h-9 items-center rounded-full bg-primary/10 px-4 text-sm font-semibold text-primary">
+            <Badge variant="primary" className="h-9 px-4 text-sm">
               {jobItem?.type} Time
-            </span>
+            </Badge>
             <span className="text-base font-medium text-muted-foreground">
               Experience: {jobItem?.experience} year
             </span>
+            {formatRelativeDate(jobItem?.createdAt) ? (
+              <span className="text-base font-medium text-muted-foreground">
+                {formatRelativeDate(jobItem.createdAt)}
+              </span>
+            ) : null}
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {jobItem?.skills.split(",").map((skillItem, index) => (
-              <span
-                key={`skill-${index}`}
-                className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
-              >
-                {skillItem}
-              </span>
+              <Badge key={`skill-${index}`}>{skillItem}</Badge>
             ))}
           </div>
         </DrawerContent>

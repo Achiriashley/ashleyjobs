@@ -5,6 +5,7 @@ import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
 import { Button } from "../ui/button";
 import JobApplicants from "../job-applicants";
+import { formatRelativeDate } from "@/utils";
 
 function RecruiterJobCard({ jobItem, jobApplications }) {
   const [showApplicantsDrawer, setShowApplicantsDrawer] = useState(false);
@@ -19,6 +20,14 @@ function RecruiterJobCard({ jobItem, jobApplications }) {
       <CommonCard
         icon={<JobIcon />}
         title={jobItem?.title}
+        description={jobItem?.companyName}
+        badges={[
+          jobItem?.location ? { label: jobItem.location } : null,
+          jobItem?.type ? { label: `${jobItem.type} Time`, variant: "primary" } : null,
+          formatRelativeDate(jobItem?.createdAt)
+            ? { label: formatRelativeDate(jobItem.createdAt), variant: "outline" }
+            : null,
+        ].filter(Boolean)}
         footerContent={
           <Button
             onClick={() => setShowApplicantsDrawer(true)}

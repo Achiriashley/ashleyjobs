@@ -267,3 +267,20 @@ export const membershipPlans = [
     type: "enterprise",
   },
 ];
+
+export function formatRelativeDate(dateInput) {
+  if (!dateInput) return null;
+  const date = new Date(dateInput);
+  if (Number.isNaN(date.getTime())) return null;
+
+  const diffMs = Date.now() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays <= 0) return "Posted today";
+  if (diffDays === 1) return "Posted yesterday";
+  if (diffDays < 30) return `Posted ${diffDays} days ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) return `Posted ${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`;
+  const diffYears = Math.floor(diffMonths / 12);
+  return `Posted ${diffYears} year${diffYears > 1 ? "s" : ""} ago`;
+}

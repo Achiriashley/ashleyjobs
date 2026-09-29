@@ -58,7 +58,6 @@ export async function fetchJobsForCandidateAction(filterParams = {}) {
   Object.keys(filterParams).forEach((filterKey) => {
     updatedParams[filterKey] = { $in: filterParams[filterKey].split(",") };
   });
-  console.log(updatedParams, "updatedParams");
   const result = await Job.find(
     filterParams && Object.keys(filterParams).length > 0 ? updatedParams : {}
   );
@@ -138,6 +137,29 @@ export async function createFilterCategoryAction() {
   return JSON.parse(JSON.stringify(result));
 }
 
+//public, unauthenticated: latest jobs teaser for the landing page
+export async function fetchPublicFeaturedJobsAction(limit = 6) {
+  await connectToDB();
+  const result = await Job.find(
+    {},
+    "title companyName location type experience createdAt"
+  )
+    .sort({ createdAt: -1 })
+    .limit(limit);
+
+  return JSON.parse(JSON.stringify(result));
+}
+
+//public, unauthenticated: real job type categories currently posted
+export async function fetchPublicJobCategoriesAction() {
+  await connectToDB();
+  const types = await Job.distinct("type", {
+    type: { $nin: [null, ""] },
+  });
+
+  return types;
+}
+
 //update profile action
 export async function updateProfileAction(data, pathToRevalidate) {
   await connectToDB();
@@ -173,6 +195,20 @@ export async function updateProfileAction(data, pathToRevalidate) {
   );
 
   revalidatePath(pathToRevalidate);
+}
+
+//toggle a job in/out of a candidate's saved jobs list
+export async function toggleSavedJobAction(profileId, jobId, pathToRevalidate) {
+  await connectToDB();
+  const profile = await Profile.findById(profileId);
+  const isSaved = !!profile?.savedJobs?.includes(jobId);
+
+  await Profile.findByIdAndUpdate(profileId, {
+    [isSaved ? "$pull" : "$addToSet"]: { savedJobs: jobId },
+  });
+
+  revalidatePath(pathToRevalidate);
+  return !isSaved;
 }
 
 //create stripe price id based on tier selection

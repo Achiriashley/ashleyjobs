@@ -5,6 +5,7 @@ const ProfileSchema = new mongoose.Schema({
   role: String,
   email: String,
   isPremiumUser: Boolean,
+  savedJobs: { type: [String], default: [] },
   memberShipType: String,
   memberShipStartDate: String,
   memberShipEndDate: String,

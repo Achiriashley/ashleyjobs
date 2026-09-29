@@ -16,12 +16,22 @@ import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import { createJobApplicationAction } from "@/actions";
+import { Bookmark } from "lucide-react";
+import { createJobApplicationAction, toggleSavedJobAction } from "@/actions";
 import { notifier } from "@/utils/notifier";
 import { formatRelativeDate } from "@/utils";
 
 function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
   const [showJobDetailsDrawer, setShowJobDetailsDrawer] = useState(false);
+  const [isSaved, setIsSaved] = useState(
+    !!profileInfo?.savedJobs?.includes(jobItem?._id)
+  );
+
+  async function handleToggleSaveJob(event) {
+    event.stopPropagation();
+    setIsSaved((prev) => !prev);
+    await toggleSavedJobAction(profileInfo?._id, jobItem?._id, "/jobs");
+  }
 
   async function handlejobApply() {
     if (!profileInfo?.isPremiumUser && jobApplications.length >= 200) {
@@ -60,6 +70,18 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
           icon={<JobIcon />}
           title={jobItem?.title}
           description={jobItem?.companyName}
+          cornerAction={
+            <button
+              type="button"
+              onClick={handleToggleSaveJob}
+              aria-label={isSaved ? "Remove from saved jobs" : "Save job"}
+              className="rounded-full p-2 text-muted-foreground transition hover:bg-accent hover:text-primary"
+            >
+              <Bookmark
+                className={isSaved ? "h-5 w-5 fill-primary text-primary" : "h-5 w-5"}
+              />
+            </button>
+          }
           badges={[
             jobItem?.location ? { label: jobItem.location } : null,
             jobItem?.type ? { label: `${jobItem.type} Time`, variant: "primary" } : null,

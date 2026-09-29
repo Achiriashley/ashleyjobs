@@ -9,8 +9,9 @@ import {
 import { useEffect, useState } from "react";
 import CommonForm from "../common-form";
 import PageHeader from "../page-header";
+import { Badge } from "../ui/badge";
 import { updateProfileAction } from "@/actions";
-import { notifier } from "@/utils/notifier"; // ✅ Import notifier
+import { notifier } from "@/utils/notifier";
 
 function AccountInfo({ profileInfo }) {
   const [candidateFormData, setCandidateFormData] = useState(
@@ -27,8 +28,6 @@ function AccountInfo({ profileInfo }) {
     if (profileInfo?.role === "candidate")
       setCandidateFormData(profileInfo?.candidateInfo);
   }, [profileInfo]);
-
-  console.log(profileInfo, "candidateFormData", profileInfo);
 
   async function handleUpdateAccount() {
     try {
@@ -64,12 +63,17 @@ function AccountInfo({ profileInfo }) {
         "/account"
       );
 
-      notifier.success("Profile updated successfully!"); // ✅ Success notification
+      notifier.success("Profile updated successfully!");
     } catch (error) {
       console.error(error);
-      notifier.error("Something went wrong while updating your profile."); // ✅ Error notification
+      notifier.error("Something went wrong while updating your profile.");
     }
   }
+
+  const displayName =
+    profileInfo?.role === "candidate"
+      ? profileInfo?.candidateInfo?.name
+      : profileInfo?.recruiterInfo?.name;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -77,7 +81,25 @@ function AccountInfo({ profileInfo }) {
         title="Account Details"
         description="Update your profile information."
       />
-      <div className="py-10 pb-24 max-w-2xl">
+      <div className="grid grid-cols-1 gap-8 py-10 pb-24 lg:grid-cols-[280px_1fr]">
+        <div className="h-fit rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary">
+            {displayName?.[0]?.toUpperCase() || "?"}
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-foreground">
+            {displayName || "Your profile"}
+          </h2>
+          <p className="text-sm text-muted-foreground">{profileInfo?.email}</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Badge variant="primary">
+              {profileInfo?.role === "candidate" ? "Candidate" : "Recruiter"}
+            </Badge>
+            {profileInfo?.isPremiumUser ? (
+              <Badge variant="warm">Premium</Badge>
+            ) : null}
+          </div>
+        </div>
+
         <CommonForm
           action={handleUpdateAccount}
           formControls={
@@ -105,4 +127,3 @@ function AccountInfo({ profileInfo }) {
 }
 
 export default AccountInfo;
-// export default AccountInfo;

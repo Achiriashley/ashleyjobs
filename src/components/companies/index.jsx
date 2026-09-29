@@ -2,9 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import CommonCard from "../common-card";
-import JobIcon from "../job-icon";
 import PageHeader from "../page-header";
 import { Button } from "../ui/button";
+
+function CompanyAvatar({ companyName }) {
+  return (
+    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
+      {companyName?.[0]?.toUpperCase() || "?"}
+    </div>
+  );
+}
 
 function Companies({ jobsList }) {
   const router = useRouter();
@@ -31,8 +38,6 @@ function Companies({ jobsList }) {
     router.push("/jobs");
   }
 
-  console.log(createUniqueSetOfCompanies);
-
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
       <PageHeader
@@ -45,7 +50,7 @@ function Companies({ jobsList }) {
             {createUniqueSetOfCompanies.map((companyName, index) => (
               <CommonCard
                 key={index}
-                icon={<JobIcon />}
+                icon={<CompanyAvatar companyName={companyName} />}
                 title={companyName}
                 footerContent={
                   <Button

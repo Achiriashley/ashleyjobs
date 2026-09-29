@@ -42,8 +42,13 @@ export default function RecruiterOnboard() {
   }
 
   return (
-    <div className="bg-white pt-24 px-8 max-w-3xl mx-auto">
-      <h1 className="text-4xl font-bold mb-8">Recruiter Onboarding</h1>
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <h1 className="mb-2 text-3xl font-bold text-foreground sm:text-4xl">
+        Recruiter Onboarding
+      </h1>
+      <p className="mb-8 text-muted-foreground">
+        Tell us about you and your company to start posting jobs.
+      </p>
       <CommonForm
         formControls={recruiterOnboardFormControls}
         buttonText="Onboard as recruiter"

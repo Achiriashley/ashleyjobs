@@ -7,9 +7,12 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-function CommonCard({ title, icon, description, badges, footerContent }) {
+function CommonCard({ title, icon, description, badges, footerContent, cornerAction }) {
   return (
-    <Card className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg cursor-pointer">
+    <Card className="relative flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg cursor-pointer">
+      {cornerAction ? (
+        <div className="absolute right-5 top-5 sm:right-7 sm:top-7">{cornerAction}</div>
+      ) : null}
       <CardHeader className="flex-1 p-0">
         {icon ? icon : null}
         {title ? (

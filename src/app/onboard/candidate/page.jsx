@@ -79,39 +79,40 @@ export default function CandidateOnboard() {
 
   if (!isLoaded || !isSignedIn) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-white text-blue-800">
-        <button
-          disabled
-          className="flex items-center gap-3 px-6 py-3 text-lg font-semibold bg-gray-800 text-white rounded-lg cursor-wait opacity-90"
+      <div className="flex h-screen flex-col items-center justify-center gap-4 bg-background text-foreground">
+        <svg
+          className="h-8 w-8 animate-spin text-primary"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
         >
-          <svg
-            className="animate-spin h-5 w-5 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-            ></path>
-          </svg>
-        </button>
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
+        <p className="text-sm text-muted-foreground">Redirecting to sign in...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white pt-24 px-8 max-w-3xl mx-auto">
-      <h1 className="text-4xl font-bold mb-8">Candidate Onboarding</h1>
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <h1 className="mb-2 text-3xl font-bold text-foreground sm:text-4xl">
+        Candidate Onboarding
+      </h1>
+      <p className="mb-8 text-muted-foreground">
+        Set up your profile so recruiters can find and evaluate you.
+      </p>
       <CommonForm
         action={createProfile}
         formData={candidateFormData}

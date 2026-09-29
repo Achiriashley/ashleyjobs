@@ -12,8 +12,6 @@ import { notifier } from "@/utils/notifier";
 
 
 function PostNewJob({ profileInfo, user, jobList }) {
-  console.log(jobList, "jobList");
-
   const [showJobDialog, setShowJobDialog] = useState(false);
   const [jobFormData, setJobFormData] = useState({
     ...initialPostNewJobFormData,
@@ -29,7 +27,7 @@ function PostNewJob({ profileInfo, user, jobList }) {
 
   function handleAddNewJob() {
     if (!profileInfo?.isPremiumUser && jobList.length >= 200) {
-      notifier.error("You can post max 2 jobs.", {
+      notifier.error("You can post max 200 jobs.", {
         description: "Please opt for membership to post more jobs",
       });
       return;

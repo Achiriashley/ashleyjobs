@@ -66,8 +66,8 @@ function Header({ user, profileInfo }) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="flex flex-col gap-6 p-6">
-            <Link href="/" className="text-2xl font-bold">
-              ASHJOBS
+            <Link href="/" className="font-display text-2xl font-extrabold tracking-tight">
+              <span className="text-primary">ASH</span>JOBS
             </Link>
             <div className="flex flex-col gap-1">
               {renderMenuItems()}
@@ -77,8 +77,8 @@ function Header({ user, profileInfo }) {
         </Sheet>
 
         {/* Logo — visible at every screen size */}
-        <Link href="/" className="text-xl font-bold sm:text-2xl">
-          ASHJOBS
+        <Link href="/" className="font-display text-xl font-extrabold tracking-tight sm:text-2xl">
+          <span className="text-primary">ASH</span>JOBS
         </Link>
       </div>
 

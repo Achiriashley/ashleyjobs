@@ -21,10 +21,16 @@ import {
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { Input } from "../ui/input";
 import PageHeader from "../page-header";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
+
+const sortOptions = [
+  { id: "newest", label: "Newest" },
+  { id: "title", label: "Title (A-Z)" },
+];
 
 function JobListing({
   user,
@@ -35,6 +41,8 @@ function JobListing({
 }) {
   const [filterParams, setFilterParams] = useState({});
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -98,6 +106,24 @@ function JobListing({
       ...new Set(filterCategories.map((listItem) => listItem[item.id])),
     ],
   }));
+
+  const displayedJobList = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    let result = !query
+      ? jobList
+      : jobList.filter((jobItem) =>
+          [jobItem.title, jobItem.companyName, jobItem.location, jobItem.skills]
+            .filter(Boolean)
+            .some((field) => field.toLowerCase().includes(query))
+        );
+
+    result = [...result].sort((a, b) => {
+      if (sortBy === "title") return (a.title || "").localeCompare(b.title || "");
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    });
+
+    return result;
+  }, [jobList, searchQuery, sortBy]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -246,25 +272,59 @@ function JobListing({
       ) : null}
       <div className="pt-6 pb-24">
         {jobList && jobList.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {jobList.map((jobItem) =>
-              profileInfo?.role === "candidate" ? (
-                <CandidateJobCard
-                  key={jobItem.id}
-                  profileInfo={profileInfo}
-                  jobItem={jobItem}
-                  jobApplications={jobApplications}
+          <>
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="relative w-full sm:max-w-sm">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search by title, company, or location"
+                  className="pl-9"
                 />
-              ) : (
-                <RecruiterJobCard
-                  key={jobItem.id}
-                  profileInfo={profileInfo}
-                  jobItem={jobItem}
-                  jobApplications={jobApplications}
-                />
-              )
+              </div>
+              <div className="flex items-center gap-2">
+                <Label className="text-sm text-muted-foreground">Sort by</Label>
+                <select
+                  value={sortBy}
+                  onChange={(event) => setSortBy(event.target.value)}
+                  className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground outline-none focus:border-primary"
+                >
+                  {sortOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {displayedJobList.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {displayedJobList.map((jobItem) =>
+                  profileInfo?.role === "candidate" ? (
+                    <CandidateJobCard
+                      key={jobItem.id}
+                      profileInfo={profileInfo}
+                      jobItem={jobItem}
+                      jobApplications={jobApplications}
+                    />
+                  ) : (
+                    <RecruiterJobCard
+                      key={jobItem.id}
+                      profileInfo={profileInfo}
+                      jobItem={jobItem}
+                      jobApplications={jobApplications}
+                    />
+                  )
+                )}
+              </div>
+            ) : (
+              <p className="py-16 text-center text-muted-foreground">
+                No jobs match your search.
+              </p>
             )}
-          </div>
+          </>
         ) : (
           <p className="py-16 text-center text-muted-foreground">
             {profileInfo?.role === "candidate"

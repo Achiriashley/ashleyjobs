@@ -255,16 +255,19 @@ export const membershipPlans = [
     heading: "Tier 1",
     price: 100,
     type: "basic",
+    durationYears: 1,
   },
   {
     heading: "Tier 2",
     price: 1000,
     type: "teams",
+    durationYears: 2,
   },
   {
     heading: "Tier 3",
     price: 5000,
     type: "enterprise",
+    durationYears: 5,
   },
 ];
 

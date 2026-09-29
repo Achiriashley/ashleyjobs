@@ -10,6 +10,7 @@ import { Input } from "../ui/input";
 import PageHeader from "../page-header";
 import { getSupabaseClient } from "@/utils/supabaseClient";
 import { createFeedPostAction, updateFeedPostAction } from "@/actions";
+import { notifier } from "@/utils/notifier";
 
 function Feed({ user, profileInfo, allFeedPosts }) {
   const [showPostDialog, setShowPostDialog] = useState(false);
@@ -29,8 +30,6 @@ function Feed({ user, profileInfo, allFeedPosts }) {
       .from("job-board-public")
       .getPublicUrl(getData.path);
 
-    console.log(data);
-
     if (data)
       setFormData({
         ...formData,
@@ -46,7 +45,10 @@ function Feed({ user, profileInfo, allFeedPosts }) {
         upsert: false,
       });
 
-    console.log(data, error);
+    if (error) {
+      notifier.error("Failed to upload image. Please try again.");
+      return;
+    }
 
     if (data) handleFetchImagePublicUrl(data);
   }
@@ -92,23 +94,27 @@ function Feed({ user, profileInfo, allFeedPosts }) {
     if (imageData) handleUploadImageToSupabase();
   }, [imageData]);
 
-  console.log(allFeedPosts);
+  const authorName =
+    profileInfo?.candidateInfo?.name || profileInfo?.recruiterInfo?.name || "You";
 
   return (
     <Fragment>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <PageHeader
           title="Explore Feed"
-          action={
-            <Button
-              onClick={() => setShowPostDialog(true)}
-              className="flex h-11 items-center justify-center px-5"
-            >
-              Add New Post
-            </Button>
-          }
+          description="See what candidates and recruiters are sharing."
         />
         <div className="py-10 pb-24">
+          <button
+            type="button"
+            onClick={() => setShowPostDialog(true)}
+            className="mb-8 flex w-full items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition hover:border-primary/40 hover:shadow-md"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+              {authorName?.[0]?.toUpperCase() || "?"}
+            </div>
+            <span className="text-muted-foreground">Share an update...</span>
+          </button>
           <div className="flex flex-col gap-5">
             {allFeedPosts && allFeedPosts.length > 0 ? (
               allFeedPosts.map((feedPostItem) => (
